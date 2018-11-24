@@ -14,6 +14,13 @@ defmodule Vostok do
   """
   def start(path) do
     IO.puts "Working on #{path}"
+
+    Pipeline.start(path, self())
+
+    receive do
+      {:ok, _} -> IO.puts "Did it work?"
+      _ -> raise "Here bu dragons"
+    end
   end
 
   def main(args) do
