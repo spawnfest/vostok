@@ -1,4 +1,6 @@
 %{
   "eimp": {:hex, :eimp, "1.0.9", "daf0d2904be3ef5e4128d946e158113cdb4d52555023746d29b83ce86b531f3c", [:rebar3], [{:p1_utils, "1.0.13", [hex: :p1_utils, repo: "hexpm", optional: false]}], "hexpm"},
+  "erl_img": {:git, "https://github.com/xrmx/erl_img", "ad6fcb6fd6ec2324fd3c2f6d32ca49fe60235eb4", [branch: "yolo"]},
+  "mogrify": {:hex, :mogrify, "0.6.1", "de1b527514f2d95a7bbe9642eb556061afb337e220cf97adbf3a4e6438ed70af", [:mix], [], "hexpm"},
   "p1_utils": {:hex, :p1_utils, "1.0.13", "176577cafb54a8c2fdc0a7fc62b9a21ab0f66588f4062792cd9e65f3e500bfdb", [:rebar3], [], "hexpm"},
 }
