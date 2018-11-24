@@ -1,0 +1,4 @@
+%{
+  "eimp": {:hex, :eimp, "1.0.9", "daf0d2904be3ef5e4128d946e158113cdb4d52555023746d29b83ce86b531f3c", [:rebar3], [{:p1_utils, "1.0.13", [hex: :p1_utils, repo: "hexpm", optional: false]}], "hexpm"},
+  "p1_utils": {:hex, :p1_utils, "1.0.13", "176577cafb54a8c2fdc0a7fc62b9a21ab0f66588f4062792cd9e65f3e500bfdb", [:rebar3], [], "hexpm"},
+}
