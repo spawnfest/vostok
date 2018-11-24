@@ -4,12 +4,9 @@
 
 ## Requirements
 
-Please install this required libraries: ( linux )
+Please install this required libraries:
 
-- `libjpeg-dev`
-- `libpng-dev`
-- `libgd-dev`
-- `libwebp-dev`
+- `imagemagick`
 
 ## Installation
 

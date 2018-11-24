@@ -23,10 +23,6 @@ defmodule Vostok.MixProject do
   defp deps do
     [
       {:mogrify, "~> 0.6.1"}
-      # {:eimp, "~> 1.0"},
-      # {:erl_img, git: "https://github.com/xrmx/erl_img", branch: "yolo"}
-      # {:dep_from_hexpm, "~> 0.3.0"},
-      # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"},
     ]
   end
 end
