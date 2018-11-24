@@ -26,8 +26,6 @@ defmodule Pipeline do
 
     IO.inspect(image)
 
-    # IO.inspect	 img
-
     send(vostok_pid, {:ok, true})
   end
 end
