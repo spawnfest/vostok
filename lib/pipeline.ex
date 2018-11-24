@@ -18,14 +18,15 @@ defmodule Pipeline do
     	-> save chunks to "image"
     	-> showtime!
     """
+    Image.start(path, self())
+    loop(vostok_pid)
+  end
 
-    image =
-      Mogrify.open(path)
-      |> Mogrify.format("txt")
-      |> Mogrify.save()
-
-    IO.inspect(image)
-
-    send(vostok_pid, {:ok, true})
+  def loop(vostok_pid) do
+    receive do
+      {:ok, path} -> send(vostok_pid, {:ok, path})
+      {:error, message} -> send(vostok_pid, {:error, message})
+      _ -> send(vostok_pid, {:error, "Something went wrong!"})
+    end
   end
 end

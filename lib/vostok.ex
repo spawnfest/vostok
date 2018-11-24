@@ -18,8 +18,9 @@ defmodule Vostok do
     Pipeline.start(path, self())
 
     receive do
-      {:ok, _} -> IO.puts "Did it work?"
-      _ -> raise "Here bu dragons"
+      {:ok, path} -> IO.puts "It works, path: #{path}"
+      {:error, message} -> IO.puts message
+      _ -> raise "No paghi wi-fi"
     end
   end
 
