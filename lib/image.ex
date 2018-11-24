@@ -21,27 +21,31 @@ defmodule Image do
     nil
   end
 
-  defp add_to_chunk(position, pixel) do
-
-  end
-
   defp get_pixels(path) do
-    [_ | stream] = File.stream(path)
-    my_map = {}
-    Enum.each(stream, fn(file_row) ->
-      splitted_file_row = String.split(file_row)
-      [position | _] = splitted_file_row[0]
-      color = String.slice(splitted_file_row[3], 5..-2)
-      [r, g, b] = String.split(color, ",")
-      )
-      # ci calcoliamo in anticipo i gruppi in cui vogliamo
-      # seprare i pixel
-      # ad ogni giro piuttosto che farci le seghe sulle
-      # datastructures ficchiamo i pixel nel proprio gruppo
-  end
-
-  defp build_map(my_map, file_row) do
-    # 0,0: (22389,36247,47558)  #578DB9  srgb(87,141,185)
-
+    my_map = %{}
+    [w, h] = [480, 480]
+    output = 32
+    chunk_numbers = w / output
+    chunk_w = w / chunk_numbers
+    chunk_h = h / chunk_numbers
+    File.stream!(path)
+    |> Stream.drop(1)
+    |> Stream.map(fn(file_row) ->
+      # 0,0: (22389,36247,47558)  #578DB9  srgb(87,141,185)
+      [pos, _, _, pixel] = String.split(String.strip(file_row))
+      position = String.slice(pos, 0..-2)
+      [x, y] = String.split(position, ",") |>
+        Enum.map(fn(c) -> String.to_integer(c) end)
+      color = String.slice(pixel, 5..-2) |>
+        String.split(",") |>
+          Enum.map(fn(c) -> String.to_integer(c) end)
+      chunk_id = {x / chunk_w, y / chunk_h}
+      Map.update(my_map, chunk_id, [], fn v ->
+        v ++ [color]
+      end)
+    end)
+    |> Stream.run
+    Enum.each(my_map, fn(x) -> IO.inspect(x) end)
+    my_map
   end
 end
