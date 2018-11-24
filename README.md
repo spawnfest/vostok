@@ -2,6 +2,15 @@
 
 **TODO: Add description**
 
+## Requirements
+
+Please install this required libraries: ( linux )
+
+- `libjpeg-dev`
+- `libpng-dev`
+- `libgd-dev`
+- `libwebp-dev`
+
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed
