@@ -46,10 +46,8 @@ defmodule Pipeline do
             case :os.type() do
               {:unix, :darwin} ->
                 System.cmd("open", ["static/index.html"])
-                IO.puts "Look at your browser now!"
               {:unix, _} ->
                 System.cmd("xdg-open", ["static/index.html"])
-                IO.puts "Look at your browser now!"
               _ ->
                 IO.puts "Open `static/index.html` in your browser"
             end

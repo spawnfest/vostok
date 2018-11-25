@@ -35,6 +35,7 @@ defmodule Vostok do
     receive do
       {:ok, chunks} ->
          print_ascii(chunks)
+         IO.puts "Look at your browser now!"
          IO.puts "We did our best for your ugly pixelated low-res image!"
       {:error, message} -> IO.puts message
       other -> raise "Me not like that: #{other}"
