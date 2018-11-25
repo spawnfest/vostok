@@ -3,15 +3,6 @@ defmodule Vostok do
   Documentation for Vostok.
   """
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> Vostok.hello()
-      :world
-
-  """
   def start(path) do
     IO.puts "Working on #{path}"
 
