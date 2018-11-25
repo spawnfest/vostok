@@ -18,11 +18,13 @@ $ mix escript.build
 
 ## Usage
 
-Vostok takes the path of the image to convert.
+Vostok takes the path of the image to convert:
 
 ```bash
 $ vostok <path>
 ```
+
+Once it has finished processing the image it will open up the image in the browser.
 
 ## Testing
 
