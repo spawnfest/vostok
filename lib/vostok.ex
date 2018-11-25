@@ -54,13 +54,13 @@ Pixelate the specified image. All hail, pixels!
 
 Usage:
   vostok <path>
-  vostok --help
+  vostok -h | --help
 
 Parameters:
   path         The path to the image to convert
 
 Options:
-  --help       Show this screen
+  -h --help    Show this screen
 """
 
   end
