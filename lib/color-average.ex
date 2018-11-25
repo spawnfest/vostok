@@ -7,6 +7,10 @@ defmodule ColorAverage do
   average by channel of the colors.
   """
 
+  @red_channel 0
+  @green_channel 1
+  @blue_channel 2
+
   @doc """
   Calculate color averaging on a set of pixels.
 
@@ -15,23 +19,17 @@ defmodule ColorAverage do
   """
   @spec run(any()) :: map()
   def run(pixels) do
-    red = average_red_channel_from pixels
-    green = average_green_channel_from pixels
-    blue = average_blue_channel_from pixels
+    red = average_single_channel_from(pixels, @red_channel)
+    green = average_single_channel_from(pixels, @green_channel)
+    blue = average_single_channel_from(pixels, @blue_channel)
 
     {:ok, {red,green,blue}}
   end
 
-  defp average_red_channel_from(pixels) do
-    Enum.map(pixels, fn([r,_,_]) -> r end) |> average_channel
-  end
-
-  defp average_green_channel_from(pixels) do
-    Enum.map(pixels, fn([_,g,_]) -> g end) |> average_channel
-  end
-
-  defp average_blue_channel_from(pixels) do
-    Enum.map(pixels, fn([_,_,b]) -> b end) |> average_channel
+  defp average_single_channel_from(pixels, channel) do
+    # we don't do pattern matching on channel to support both
+    # 3(RGB) and 4 channels (RGBA images)
+    Enum.map(pixels, fn(pixel) -> Enum.at(pixel, channel) end) |> average_channel
   end
 
   defp average_channel(colors) do
