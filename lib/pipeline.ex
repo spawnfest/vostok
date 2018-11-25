@@ -44,6 +44,16 @@ defmodule Pipeline do
           Enum.count(chunks) == size ->
             {:ok, file} = File.open("ciao.svg", [:write])
             IO.binwrite file, Svg.render(chunks, output_size)
+            File.close file
+
+            case :os.type() do
+              {:unix, :darwin} ->
+                System.cmd("open", ["static/index.html"])
+              {:unix, _} ->
+                System.cmd("xdg-open", ["static/index.html"])
+              _ ->
+                IO.puts "Open `static/index.html` in your browser"
+            end
             send(vostok_pid, {:ok, chunks})
           true -> loop(vostok_pid, total_chunks, chunks, output_size)
         end
