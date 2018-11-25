@@ -28,6 +28,7 @@ defmodule Image do
   defp get_pixels(path, width, height, result) do
     chunk_w = div(width, result)
     chunk_h = div(height, result)
+    IO.puts "Reading image informations from: #{path}"
     File.stream!(path)
       |> Stream.drop(1)
       |> Enum.map(fn(file_row) ->
