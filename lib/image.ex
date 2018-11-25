@@ -18,7 +18,7 @@ defmodule Image do
       |> Mogrify.save()
   end
 
-  defp get_pixels(nil), do: nil
+  defp get_pixels(nil, _, _, _), do: nil
 
   defp get_pixels(path, width, height, result) do
     chunk_w = div(width, result)
@@ -27,17 +27,12 @@ defmodule Image do
       |> Stream.drop(1)
       |> Enum.map(fn(file_row) ->
         # 0,0: (22389,36247,47558)  #578DB9  srgb(87,141,185)
-        [pos, _, hex, pixel] = String.strip(file_row) |> String.split
+        [pos, _, hex, _] = String.trim(file_row) |> String.split
         position = String.slice(pos, 0..-2)
         [x, y] = String.split(position, ",")
                 |> Enum.map(fn(c) -> String.to_integer(c) end)
 
-        color = String.replace(hex, "#", "")
-        |> String.to_charlist
-        |> Enum.chunk_every(2)
-        |> Enum.map(fn(x) -> List.to_string(x) |> String.to_integer(16) end)
-
-        color = Colour.Utils.hex_to_rgb hex
+        color = Color.Utils.hex_to_rgb hex
 
         chunk_id = {div(x, chunk_w), div(y, chunk_h)}
         {chunk_id, color}
