@@ -31,7 +31,8 @@ defmodule Vostok.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:mogrify, "~> 0.6.1"}
+      {:mogrify, "~> 0.6.1"},
+      {:ex_doc, ">= 0.0.0", only: :dev}
     ]
   end
 
