@@ -18,9 +18,8 @@ defmodule Vostok do
     Pipeline.start(path, self(), 480, 480, 32)
 
     receive do
-      {:ok, path} -> IO.puts """
-Our best effort for your ugly pixelated low-res image are in
-#{path}
+      {:ok, _} -> IO.puts """
+We did our best for your ugly pixelated low-res image!
 """
       {:error, message} -> IO.puts message
       other -> raise "Me not like that: #{other}"

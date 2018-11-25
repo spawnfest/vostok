@@ -54,7 +54,7 @@ defmodule Pipeline do
               _ ->
                 IO.puts "Open `static/index.html` in your browser"
             end
-            send(vostok_pid, {:ok, chunks})
+            send(vostok_pid, {:ok, true})
           true -> loop(vostok_pid, total_chunks, chunks, output_size)
         end
       _ -> send(vostok_pid, {:error, "Something went wrong!"})
