@@ -6,14 +6,14 @@ html {
 }
 
 .ba-slider {
-  width: 70vh !important;
-  height: 70vh !important;
+  width: 480px !important;
+  height: 480px !important;
   left: 50%;
   transform: translateX(-50%)
 }
 
 .ba-control {
-  height: 70vh !important;
+  height: 480px !important;
 }
 
 .ba-control-bar {
