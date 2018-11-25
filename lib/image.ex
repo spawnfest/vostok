@@ -17,9 +17,8 @@ defmodule Image do
       |> Mogrify.resize_to_fill("#{width}x#{height}")
 
     # output in the static/ folder to serve from browser
-    output_path = "#{Path.dirname(__ENV__.file)}/../static/cropped.jpg"
     Mogrify.format(image, "jpg")
-    |> Mogrify.save(path: output_path)
+    |> Mogrify.save(path: "static/cropped.jpg")
 
     image
     |> Mogrify.format("txt")
