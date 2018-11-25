@@ -1,28 +1,29 @@
 defmodule Image do
-  def start(path, pipeline_pid) do
-    spawn(__MODULE__, :init, [path, pipeline_pid])
+  def start(path, pipeline_pid, width // 480, height // 480, result // 32) do
+    spawn(__MODULE__, :init, [path, pipeline_pid, width, height, result])
   end
 
-  def init(path, pipeline_pid) do
-    Mogrify.open(path)
-      |> Mogrify.gravity("center")
-      |> Mogrify.resize_to_fill("480x480")
-      |> Mogrify.format("txt")
-      |> Mogrify.save()
+  def init(path, pipeline_pid, width, height, result) do
+    crop_and_resize(path, width, height)
       |> Map.get(:path)
-      |> get_pixels()
+      |> get_pixels(width, height, result)
       |> send_message(pipeline_pid)
   end
 
-  defp send_message(nil, pipeline_pid), do: send(pipeline_pid, {:error, "No path found!"})
-  defp send_message(chunks, pipeline_pid), do: send(pipeline_pid, {:ok, chunks})
+  defp crop_and_resize(path, width, height) do
+    Mogrify.open(path)
+      |> Mogrify.gravity("center")
+      |> Mogrify.resize_to_fill("#{width}x#{height}")
+      |> Mogrify.format("txt")
+      |> Mogrify.save()
+  end
 
   defp get_pixels(nil), do: nil
 
-  defp get_pixels(path) do
+  defp get_pixels(path, width, height, result) do
     my_map = %{}
-    [w, h] = [480, 480]
-    output = 32
+    [w, h] = [width, height]
+    output = result
     chunk_numbers = div(w, output)
     chunk_w = div(w, chunk_numbers)
     chunk_h = div(h, chunk_numbers)
@@ -31,7 +32,7 @@ defmodule Image do
         |> Stream.drop(1)
         |> Enum.map(fn(file_row) ->
           # 0,0: (22389,36247,47558)  #578DB9  srgb(87,141,185)
-          [pos, _, _, pixel] = String.split(String.strip(file_row))
+          [pos, _, _, pixel] = String.strip(file_row) |> String.split
           position = String.slice(pos, 0..-2)
           [x, y] = String.split(position, ",")
                   |> Enum.map(fn(c) -> String.to_integer(c) end)
@@ -48,4 +49,7 @@ defmodule Image do
           (fn r -> {_, value} = r; value end)
         )
   end
+
+  defp send_message(nil, pipeline_pid), do: send(pipeline_pid, {:error, "No path found!"})
+  defp send_message(chunks, pipeline_pid), do: send(pipeline_pid, {:ok, chunks})
 end
