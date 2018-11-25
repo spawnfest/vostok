@@ -16,7 +16,6 @@ defmodule Image do
       |> Mogrify.resize_to_fill("#{width}x#{height}")
       |> Mogrify.format("txt")
       |> Mogrify.save()
-      |> IO.inspect()
   end
 
   defp get_pixels(nil), do: nil
@@ -32,14 +31,11 @@ defmodule Image do
         position = String.slice(pos, 0..-2)
         [x, y] = String.split(position, ",")
                 |> Enum.map(fn(c) -> String.to_integer(c) end)
-        IO.inspect pixel
-        IO.inspect hex
 
         color = String.replace(hex, "#", "")
         |> String.to_charlist
         |> Enum.chunk_every(2)
         |> Enum.map(fn(x) -> List.to_string(x) |> String.to_integer(16) end)
-        |> IO.inspect
 
         color = Colour.Utils.hex_to_rgb hex
 
