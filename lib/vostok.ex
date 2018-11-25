@@ -25,7 +25,7 @@ defmodule Vostok do
   end
 
   def main(args) do
-    path = parse_args(args)
+    {path} = parse_args(args)
     # IO.inspect(path)
     start(path)
   end
