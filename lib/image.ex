@@ -18,8 +18,6 @@ defmodule Image do
       |> Mogrify.save()
   end
 
-  defp get_pixels(nil, _, _, _), do: nil
-
   defp get_pixels(path, width, height, result) do
     chunk_w = div(width, result)
     chunk_h = div(height, result)

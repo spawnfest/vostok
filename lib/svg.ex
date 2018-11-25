@@ -3,7 +3,7 @@ defmodule Svg do
     rects = Enum.map(pixels, fn pixel ->
       rect(pixel)
     end)
-    svg = [header(output_size)] ++ rects ++ [footer]
+    svg = [header(output_size)] ++ rects ++ [footer()]
     Enum.join(svg, "\n")
   end
 

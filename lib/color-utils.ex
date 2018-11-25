@@ -10,7 +10,7 @@ defmodule Color.Utils do
   ## Examples
   Color.Utils.hex_to_rgb("#000000")
   """
-  @spec hex_to_rgb(string()) :: nonempty_list(non_neg_integer())
+  @spec hex_to_rgb(String.t()) :: nonempty_list(non_neg_integer())
   def hex_to_rgb(hex) do
     String.replace(hex, "#", "")
     |> String.to_charlist()

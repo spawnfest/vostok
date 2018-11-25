@@ -18,9 +18,12 @@ defmodule Vostok do
     Pipeline.start(path, self(), 480, 480, 32)
 
     receive do
-      {:ok, path} -> "yeah!!!"
+      {:ok, path} -> IO.puts """
+Our best effort for your ugly pixelated low-res image are in
+#{path}
+"""
       {:error, message} -> IO.puts message
-      _ -> raise "No paghi wi-fi"
+      other -> raise "Me not like that: #{other}"
     end
   end
 
