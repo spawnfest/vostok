@@ -24,9 +24,24 @@ defmodule Pipeline do
 
   def loop(vostok_pid) do
     receive do
-      {:ok, chunks} -> send(vostok_pid, {:ok, chunks})
+      {:ok, chunks} ->
+        total_chunks = Enum.count(chunks)
+        Enum.each(chunks, fn chunk ->
+          Chunk.start(chunk, self())
+        end)
+        loop(vostok_pid, total_chunks, [])
       {:error, message} -> send(vostok_pid, {:error, message})
       _ -> send(vostok_pid, {:error, "Something went wrong!"})
     end
+  end
+
+  def loop(vostok_pid, total_chunks, acc) do
+    {:ok, chunk} ->
+      chunks = acc ++ [chunk]
+      case Enum.count(chunks) do
+        total_chunks -> send(vostok_pid, {:ok, chunks})
+        _ -> loop(vostok_pid, total_chunks, chunks)
+      end
+    _ -> send(vostok_pid, {:error, "Something went wrong!"})
   end
 end
