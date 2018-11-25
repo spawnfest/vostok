@@ -25,21 +25,42 @@ defmodule Vostok do
   end
 
   def main(args) do
-    {path} = parse_args(args)
+    path = parse_args(args)
+    # IO.inspect(path)
     start(path)
   end
 
   defp help do
-    IO.puts "vostok <path>"
-    exit(1)
+    IO.puts """
+Pixelate the specified image. All hail, pixels!
+
+Usage:
+  vostok <path>
+  vostok --help
+
+Parameters:
+  path         The path to the image to convert
+
+Options:
+  --help       Show this screen
+"""
+
   end
 
   defp parse_args(args) do
-    parsed = OptionParser.parse(args, strict: [])
+    parsed = OptionParser.parse(args,
+        strict: [
+            help: :boolean
+        ],
+        aliases: []
+    )
 
     case parsed do
-      {_, [path], _} -> {path}
-      _ -> help()
+      {_, [path], _} ->
+        {path}
+      _ ->
+        help()
+        exit(:shutdown)
     end
   end
 end
