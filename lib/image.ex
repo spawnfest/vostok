@@ -41,12 +41,7 @@ defmodule Image do
         |> Enum.map(fn(x) -> List.to_string(x) |> String.to_integer(16) end)
         |> IO.inspect
 
-
-        color = String.slice(pixel, 5..-2)
-                |> String.split(",")
-                |> Enum.map(fn(c) ->
-                  String.to_integer(c)
-                end)
+        color = Color.Utils.hex_to_rgb hex
 
         chunk_id = {div(x, chunk_w), div(y, chunk_h)}
         {chunk_id, color}
