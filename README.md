@@ -1,15 +1,44 @@
 ![](https://github.com/spawnfest/vostok/blob/master/static/vostok_logo.png)
-# Vostok
+*since 1961*
 
-Vostok converts an image to a 32x32 pixelated svg.
+# 🖼 Vostok
+
+Vostok converts an image to a pixelated SVG.
+
+[Восток][vostok] (*Vostok* in English) was the Russian spacecraft that in 1961
+allowed the first human spaceflight. 🚀
+
+[vostok]: https://en.wikipedia.org/wiki/Vostok_(spacecraft)
 
 ## Requirements
 
-Vostok requires the following applications:
+Vostok requires `imagemagick` to work.
 
-- `imagemagick`
+Install it with:
+
+**MacOSX**: `brew install imagemagick`
+
+**Linux**: search your distribution repositories for `imagemagick` package;  
+eg: `sudo apt install imagemagick`
+
+**Windows**: Chocolatey has an `imagemagick` package, but no tests have been done :)
 
 ## Build
+
+Vostok has been successfully built using `elixir 1.7.4` and `erlang 20.3.8.14`.
+Has not been tested on different versions.
+
+To build from command line:
+
+```bash
+$ # clone using HTTPS URL
+$ git clone https://github.com/spawnfest/vostok.git && cd vostok
+$ # clone using SSH URL
+$ git clone git@github.com:spawnfest/vostok.git && cd vostok
+
+```
+
+Then install dependencies and build the CLI application:
 
 ```bash
 $ mix deps.get
@@ -21,30 +50,23 @@ $ mix escript.build
 Vostok takes the path of the image to convert:
 
 ```bash
-$ vostok <path>
+$ vostok path/to/the/image.jpg
 ```
 
-Once it has finished processing the image it will open up the image in the browser.
+Execute `vostok --help` to see usage and help.
+
+Has been tested with `jpg` and `png` image formats, works probably with other formats
+supported by ImageMagick.  
+
+Once Vostok finishes processing the image, it tries to open you browser at
+`static/index.html` to display it's work.  
+In case this does not happen, manually open the `index.html` file in the `static`
+folder of this repository with a recent browser.
 
 ## Testing
 
-To run tests:
+You can run the supplied test suite with:
 
 ```bash
 $ mix test
 ```
-
-## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `vostok` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:vostok, "~> 0.1.0"}
-  ]
-end
-```
-
-The docs may be found at [https://hexdocs.pm/vostok](https://hexdocs.pm/vostok).
