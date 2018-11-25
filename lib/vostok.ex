@@ -3,6 +3,30 @@ defmodule Vostok do
   Documentation for Vostok.
   """
 
+  def print_ascii(chunks) do
+    Enum.sort(chunks, fn e1, e2 ->
+      e1 < e2
+    end)
+    |> Enum.map(fn pixel ->
+      {{x, y}, rgb} = pixel
+      {{x, y}, ColorConversion.to_grayscale(rgb)}
+    end)
+    |> Enum.group_by(
+      (fn r -> {{_, key}, _} = r; key end),
+      (fn r -> {_, value} = r; value end)
+    )
+    |> Enum.map(fn row ->
+      {_, pixels} = row
+      Enum.map(pixels, fn pixel ->
+        ColorConversion.to_ascii(pixel)
+      end)
+      |> Enum.join("")
+    end)
+    |> Enum.each(fn row ->
+      IO.puts row
+    end)
+  end
+
   @doc """
   Hello world.
 
@@ -18,7 +42,8 @@ defmodule Vostok do
     Pipeline.start(path, self(), 480, 480, 32)
 
     receive do
-      {:ok, path} -> "yeah!!!"
+      {:ok, chunks} ->
+         print_ascii(chunks)
       {:error, message} -> IO.puts message
       _ -> raise "No paghi wi-fi"
     end
