@@ -24,7 +24,7 @@ defmodule Pipeline do
 
   def loop(vostok_pid) do
     receive do
-      {:ok, path} -> send(vostok_pid, {:ok, path})
+      {:ok, chunks} -> send(vostok_pid, {:ok, chunks})
       {:error, message} -> send(vostok_pid, {:error, message})
       _ -> send(vostok_pid, {:error, "Something went wrong!"})
     end
