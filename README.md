@@ -1,13 +1,36 @@
 ![](https://github.com/spawnfest/vostok/blob/master/static/vostok_logo.png)
 # Vostok
 
-**TODO: Add description**
+Vostok converts an image to a 32x32 pixelated svg.
 
 ## Requirements
 
-Please install this required libraries:
+Vostok requires the following applications:
 
 - `imagemagick`
+
+## Build
+
+```bash
+$ mix deps.get
+$ mix escript.build
+```
+
+## Usage
+
+Vostok takes the path of the image to convert.
+
+```bash
+$ vostok <path>
+```
+
+## Testing
+
+To run tests:
+
+```bash
+$ mix test
+```
 
 ## Installation
 
@@ -22,7 +45,4 @@ def deps do
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/vostok](https://hexdocs.pm/vostok).
-
+The docs may be found at [https://hexdocs.pm/vostok](https://hexdocs.pm/vostok).
