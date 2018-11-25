@@ -19,10 +19,6 @@ defmodule Pipeline do
     	-> showtime!
     """
     Image.start(path, self(), width, height, output_size)
-    loop(vostok_pid, output_size)
-  end
-
-  def loop(vostok_pid, output_size) do
     receive do
       {:ok, chunks} ->
         total_chunks = Enum.count(chunks)
@@ -49,8 +45,10 @@ defmodule Pipeline do
             case :os.type() do
               {:unix, :darwin} ->
                 System.cmd("open", ["static/index.html"])
+                IO.puts "Look at your browser now!"
               {:unix, _} ->
                 System.cmd("xdg-open", ["static/index.html"])
+                IO.puts "Look at your browser now!"
               _ ->
                 IO.puts "Open `static/index.html` in your browser"
             end
