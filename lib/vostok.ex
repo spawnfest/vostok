@@ -27,16 +27,6 @@ defmodule Vostok do
     end)
   end
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> Vostok.hello()
-      :world
-
-  """
-
   def start(path) do
     IO.puts "Working on #{path}"
 
