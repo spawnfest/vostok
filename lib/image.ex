@@ -11,11 +11,17 @@ defmodule Image do
   end
 
   defp crop_and_resize(path, width, height) do
-    Mogrify.open(path)
+    image =
+      Mogrify.open(path)
       |> Mogrify.gravity("center")
       |> Mogrify.resize_to_fill("#{width}x#{height}")
-      |> Mogrify.format("txt")
-      |> Mogrify.save()
+
+    cropped_image = Mogrify.save(image)
+    File.rename(cropped_image.path, "#{Path.dirname(__ENV__.file)}/../static/cropped.jpg")
+
+    image
+    |> Mogrify.format("txt")
+    |> Mogrify.save()
   end
 
   defp get_pixels(path, width, height, result) do

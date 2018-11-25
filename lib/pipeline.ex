@@ -38,7 +38,8 @@ defmodule Pipeline do
         size = :math.pow(output_size, 2)
         cond do
           Enum.count(chunks) == size ->
-            {:ok, file} = File.open("ciao.svg", [:write])
+            output_path = "#{Path.dirname(__ENV__.file)}/../static/pixelated-image.svg"
+            {:ok, file} = File.open(output_path, [:write])
             IO.binwrite file, Svg.render(chunks, output_size)
             File.close file
 
