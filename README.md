@@ -1,3 +1,4 @@
+![](https://github.com/spawnfest/vostok/blob/master/static/vostok_logo.png)
 # Vostok
 
 **TODO: Add description**
