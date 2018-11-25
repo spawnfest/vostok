@@ -1,9 +1,9 @@
 defmodule Pipeline do
-  def start(path, vostok_pid) do
-    spawn(__MODULE__, :init, [path, vostok_pid])
+  def start(path, vostok_pid, width, height, output_size) do
+    spawn(__MODULE__, :init, [path, vostok_pid, width, height, output_size])
   end
 
-  def init(path, vostok_pid) do
+  def init(path, vostok_pid, width, height, output_size) do
     _ = """
     read image from FS
     	-> resize
@@ -18,30 +18,36 @@ defmodule Pipeline do
     	-> save chunks to "image"
     	-> showtime!
     """
-    Image.start(path, self())
-    loop(vostok_pid)
+    Image.start(path, self(), width, height, output_size)
+    loop(vostok_pid, output_size)
   end
 
-  def loop(vostok_pid) do
+  def loop(vostok_pid, output_size) do
     receive do
       {:ok, chunks} ->
         total_chunks = Enum.count(chunks)
         Enum.each(chunks, fn chunk ->
           Chunk.start(chunk, self())
         end)
-        loop(vostok_pid, total_chunks, [])
+        loop(vostok_pid, total_chunks, [], output_size)
       {:error, message} -> send(vostok_pid, {:error, message})
       _ -> send(vostok_pid, {:error, "Something went wrong!"})
     end
   end
 
-  def loop(vostok_pid, total_chunks, acc) do
-    {:ok, chunk} ->
-      chunks = acc ++ [chunk]
-      case Enum.count(chunks) do
-        total_chunks -> send(vostok_pid, {:ok, chunks})
-        _ -> loop(vostok_pid, total_chunks, chunks)
-      end
-    _ -> send(vostok_pid, {:error, "Something went wrong!"})
+  def loop(vostok_pid, total_chunks, acc, output_size) do
+    receive do
+      {:ok, chunk} ->
+        chunks = acc ++ [chunk]
+        size = :math.pow(output_size, 2)
+        cond do
+          Enum.count(chunks) == size ->
+            {:ok, file} = File.open("ciao.svg", [:write])
+            IO.binwrite file, Svg.render(chunks, output_size)
+            send(vostok_pid, {:ok, chunks})
+          true -> loop(vostok_pid, total_chunks, chunks, output_size)
+        end
+      _ -> send(vostok_pid, {:error, "Something went wrong!"})
+    end
   end
 end

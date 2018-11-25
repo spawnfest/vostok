@@ -15,10 +15,10 @@ defmodule Vostok do
   def start(path) do
     IO.puts "Working on #{path}"
 
-    Pipeline.start(path, self())
+    Pipeline.start(path, self(), 480, 480, 32)
 
     receive do
-      {:ok, path} -> IO.puts "It works"
+      {:ok, path} -> "yeah!!!"
       {:error, message} -> IO.puts message
       _ -> raise "No paghi wi-fi"
     end

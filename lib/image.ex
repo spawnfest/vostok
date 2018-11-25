@@ -1,5 +1,5 @@
 defmodule Image do
-  def start(path, pipeline_pid, width // 480, height // 480, result // 32) do
+  def start(path, pipeline_pid, width, height, result) do
     spawn(__MODULE__, :init, [path, pipeline_pid, width, height, result])
   end
 
@@ -16,38 +16,45 @@ defmodule Image do
       |> Mogrify.resize_to_fill("#{width}x#{height}")
       |> Mogrify.format("txt")
       |> Mogrify.save()
+      |> IO.inspect()
   end
 
   defp get_pixels(nil), do: nil
 
   defp get_pixels(path, width, height, result) do
-    my_map = %{}
-    [w, h] = [width, height]
-    output = result
-    chunk_numbers = div(w, output)
-    chunk_w = div(w, chunk_numbers)
-    chunk_h = div(h, chunk_numbers)
-    stream =
-      File.stream!(path)
-        |> Stream.drop(1)
-        |> Enum.map(fn(file_row) ->
-          # 0,0: (22389,36247,47558)  #578DB9  srgb(87,141,185)
-          [pos, _, _, pixel] = String.strip(file_row) |> String.split
-          position = String.slice(pos, 0..-2)
-          [x, y] = String.split(position, ",")
-                  |> Enum.map(fn(c) -> String.to_integer(c) end)
+    chunk_w = div(width, result)
+    chunk_h = div(height, result)
+    File.stream!(path)
+      |> Stream.drop(1)
+      |> Enum.map(fn(file_row) ->
+        # 0,0: (22389,36247,47558)  #578DB9  srgb(87,141,185)
+        [pos, _, hex, pixel] = String.strip(file_row) |> String.split
+        position = String.slice(pos, 0..-2)
+        [x, y] = String.split(position, ",")
+                |> Enum.map(fn(c) -> String.to_integer(c) end)
+        IO.inspect pixel
+        IO.inspect hex
 
-          color = String.slice(pixel, 5..-2)
-                  |> String.split(",")
-                  |> Enum.map(fn(c) -> String.to_integer(c) end)
+        color = String.replace(hex, "#", "")
+        |> String.to_charlist
+        |> Enum.chunk_every(2)
+        |> Enum.map(fn(x) -> List.to_string(x) |> String.to_integer(16) end)
+        |> IO.inspect
 
-          chunk_id = {div(x, chunk_w), div(y, chunk_h)}
-          {chunk_id, color}
-        end)
-        |> Enum.group_by(
-          (fn r -> {key, _} = r; key end),
-          (fn r -> {_, value} = r; value end)
-        )
+
+        color = String.slice(pixel, 5..-2)
+                |> String.split(",")
+                |> Enum.map(fn(c) ->
+                  String.to_integer(c)
+                end)
+
+        chunk_id = {div(x, chunk_w), div(y, chunk_h)}
+        {chunk_id, color}
+      end)
+      |> Enum.group_by(
+        (fn r -> {key, _} = r; key end),
+        (fn r -> {_, value} = r; value end)
+      )
   end
 
   defp send_message(nil, pipeline_pid), do: send(pipeline_pid, {:error, "No path found!"})

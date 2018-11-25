@@ -9,15 +9,15 @@ defmodule ColorAverage do
 	end
 
 	defp average_red_channel_from(pixels) do
-		Enum.map(pixels, fn({r,_,_}) -> r end) |> average_channel
+		Enum.map(pixels, fn([r,_,_]) -> r end) |> average_channel
 	end
 
 	defp average_green_channel_from(pixels) do
-		Enum.map(pixels, fn({_,g,_}) -> g end) |> average_channel
+		Enum.map(pixels, fn([_,g,_]) -> g end) |> average_channel
 	end
 
 	defp average_blue_channel_from(pixels) do
-		Enum.map(pixels, fn({_,_,b}) -> b end) |> average_channel
+		Enum.map(pixels, fn([_,_,b]) -> b end) |> average_channel
 	end
 
 	defp average_channel(colors) do
@@ -30,5 +30,6 @@ defmodule ColorAverage do
 		|> Integer.floor_div(length(colors))
 		|> :math.sqrt
 		|> Float.floor
+		|> trunc
 	end
 end
