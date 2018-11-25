@@ -1,5 +1,8 @@
 html {
-  font-size: 15px
+  font-size: 16px;
+  font-family: "Gadget", "Arial Black";
+  color: white;
+  text-transform: uppercase;
 }
 
 .ba-slider {
@@ -11,6 +14,15 @@ html {
 
 .ba-control {
   height: 70vh !important;
+}
+
+.ba-control-bar {
+  width: 2px;
+  box-shadow: 0px 0px 5px #2c3e50;
+}
+
+.ba-control-handle {
+  background-color: #2c3e50;
 }
 
 header {
@@ -29,4 +41,21 @@ body {
 
 .container {
   padding: 3rem 0
+}
+
+footer {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+footer a {
+  background-color: #2c3e50;
+  color: white;
+  padding: 25px;
+  text-decoration: none;
+}
+footer a:hover {
+  color: white;
+  background-color: #2c3e50e6;
 }
