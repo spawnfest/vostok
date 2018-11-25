@@ -28,7 +28,7 @@ defmodule Vostok do
   end
 
   def start(path) do
-    IO.puts "Working on #{path}"
+    IO.puts "Working on #{path}. This will take a while..."
 
     Pipeline.start(path, self(), 480, 480, 32)
 
