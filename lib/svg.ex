@@ -8,7 +8,7 @@ defmodule Svg do
   end
 
   defp header(output_size) do
-    "<svg viewbox='0 0 #{output_size} #{output_size}' xmlns='https://www.w3.org/2000/svg'>"
+    "<svg viewbox='0 0 #{output_size} #{output_size}' xmlns='http://www.w3.org/2000/svg'>"
   end
 
   defp footer, do: "</svg>"
