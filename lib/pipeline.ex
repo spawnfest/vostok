@@ -25,13 +25,13 @@ defmodule Pipeline do
         Enum.each(chunks, fn chunk ->
           Chunk.start(chunk, self())
         end)
-        loop(vostok_pid, total_chunks, [], output_size)
+        loop(vostok_pid, total_chunks, [], width, output_size)
       {:error, message} -> send(vostok_pid, {:error, message})
       other -> send(vostok_pid, {:error, "Something went wrong: #{other}"})
     end
   end
 
-  def loop(vostok_pid, total_chunks, acc, output_size) do
+  def loop(vostok_pid, total_chunks, acc, dimension, output_size) do
     receive do
       {:ok, chunk} ->
         chunks = acc ++ [chunk]
@@ -39,7 +39,7 @@ defmodule Pipeline do
         cond do
           Enum.count(chunks) == size ->
             {:ok, file} = File.open("static/pixelated-image.svg", [:write])
-            IO.binwrite file, Svg.render(chunks, output_size)
+            IO.binwrite file, Svg.render(chunks, dimension, output_size)
             File.close file
 
             case :os.type() do
@@ -51,7 +51,7 @@ defmodule Pipeline do
                 IO.puts "Open `static/index.html` in your browser"
             end
             send(vostok_pid, {:ok, chunks})
-          true -> loop(vostok_pid, total_chunks, chunks, output_size)
+          true -> loop(vostok_pid, total_chunks, chunks, dimension, output_size)
         end
       _ -> send(vostok_pid, {:error, "Something went wrong!"})
     end

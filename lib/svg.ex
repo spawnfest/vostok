@@ -1,9 +1,10 @@
 defmodule Svg do
-  def render(pixels, output_size) do
+  def render(pixels, dimension, output_size) do
+    scaling = dimension/output_size
     rects = Enum.map(pixels, fn pixel ->
-      rect(pixel)
+      rect(pixel, scaling)
     end)
-    svg = [header(output_size)] ++ rects ++ [footer()]
+    svg = [header(output_size*scaling)] ++ rects ++ [footer()]
     Enum.join(svg, "\n")
   end
 
@@ -13,8 +14,8 @@ defmodule Svg do
 
   defp footer, do: "</svg>"
 
-  defp rect(pixel) do
+  defp rect(pixel, scaling) do
     {{x, y}, {r, g, b}} = pixel
-    "<rect x='#{x}' y='#{y}' width='1' height='1' fill='rgb(#{r},#{g},#{b})'/>"
+    "<rect x='#{x*scaling}' y='#{y*scaling}' width='#{1*scaling}' height='#{1*scaling}' fill='rgb(#{r},#{g},#{b})'/>"
   end
 end
