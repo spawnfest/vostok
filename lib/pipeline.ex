@@ -31,7 +31,7 @@ defmodule Pipeline do
         end)
         loop(vostok_pid, total_chunks, [], output_size)
       {:error, message} -> send(vostok_pid, {:error, message})
-      _ -> send(vostok_pid, {:error, "Something went wrong!"})
+      other -> send(vostok_pid, {:error, "Something went wrong: #{other}"})
     end
   end
 
