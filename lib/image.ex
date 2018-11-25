@@ -18,7 +18,7 @@ defmodule Image do
 
     # output in the static/ folder to serve from browser
     output_path = "#{Path.dirname(__ENV__.file)}/../static/cropped.jpg"
-    cropped_image = Mogrify.save(image, path: output_path)
+    Mogrify.save(image, path: output_path)
 
     image
     |> Mogrify.format("txt")
