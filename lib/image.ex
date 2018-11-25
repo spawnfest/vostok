@@ -16,8 +16,9 @@ defmodule Image do
       |> Mogrify.gravity("center")
       |> Mogrify.resize_to_fill("#{width}x#{height}")
 
-    cropped_image = Mogrify.save(image)
-    File.rename(cropped_image.path, "#{Path.dirname(__ENV__.file)}/../static/cropped.jpg")
+    # output in the static/ folder to serve from browser
+    output_path = "#{Path.dirname(__ENV__.file)}/../static/cropped.jpg"
+    cropped_image = Mogrify.save(image, path: output_path)
 
     image
     |> Mogrify.format("txt")
